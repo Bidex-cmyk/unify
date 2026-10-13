@@ -3,11 +3,12 @@ from fastapi import APIRouter, Depends, FastAPI
 from unify import __version__
 from unify.auth import require_token
 from unify.config import settings
-from unify.routers import notes
+from unify.routers import bookmarks, notes
 
 health_router = APIRouter()
 api_router = APIRouter(prefix="/api", dependencies=[Depends(require_token)])
 api_router.include_router(notes.router)
+api_router.include_router(bookmarks.router)
 
 
 @health_router.get("/health")

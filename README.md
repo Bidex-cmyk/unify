@@ -72,6 +72,11 @@ Routes use the `/api` prefix. Every route under `/api` requires the bearer token
 | GET | `/api/notes/{note_id}` | Get a note by ID |
 | PATCH | `/api/notes/{note_id}` | Partially update a note |
 | DELETE | `/api/notes/{note_id}` | Soft-delete a note; `hard=true` permanently deletes it |
+| GET | `/api/bookmarks` | List bookmarks; `include_deleted=true` includes soft-deleted bookmarks |
+| POST | `/api/bookmarks` | Create a bookmark; fetches title and description in the background |
+| GET | `/api/bookmarks/{bookmark_id}` | Get a bookmark by ID |
+| PATCH | `/api/bookmarks/{bookmark_id}` | Partially update a bookmark |
+| DELETE | `/api/bookmarks/{bookmark_id}` | Soft-delete a bookmark; `hard=true` permanently deletes it |
 
 ## Migrations
 
@@ -87,7 +92,7 @@ make downgrade
 - [x] DB models
 - [x] Auth
 - [x] Notes API
-- [ ] Bookmarks API
+- [x] Bookmarks API
 - [ ] HTMX UI
 - [ ] VPS deploy
 - [ ] CI/CD

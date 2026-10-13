@@ -13,13 +13,14 @@ dependencies = [
     "sqlmodel",
     "pydantic-settings",
     "alembic",
+    "httpx>=0.27",
+    "beautifulsoup4>=4.12",
 ]
 
 [dependency-groups]
 dev = [
     "pytest",
     "pytest-asyncio",
-    "httpx",
     "ruff",
 ]
 
