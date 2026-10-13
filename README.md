@@ -52,6 +52,15 @@ make lint
 make fmt
 ```
 
+### Auth
+
+All routes under `/api` require a bearer token. Set `UNIFY_API_TOKEN` in `.env`. The
+default development token is `dev-token-change-me`.
+
+```sh
+curl -H "Authorization: Bearer $UNIFY_API_TOKEN" http://localhost:8000/api/whoami
+```
+
 ## Migrations
 
 ```sh
@@ -64,7 +73,7 @@ make downgrade
 
 - [x] Scaffold
 - [x] DB models
-- [ ] Auth
+- [x] Auth
 - [ ] Notes API
 - [ ] Bookmarks API
 - [ ] HTMX UI
