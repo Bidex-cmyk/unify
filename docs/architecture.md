@@ -42,9 +42,20 @@ used only in isolated tests; application startup must not create or mutate the s
 
 The `/api` router applies `require_token` as a router-wide dependency, so new API routes
 are protected by default. It compares a configured single-user bearer token in constant
-time. `/health` and the development-only UI are outside that router. When the UI gains
-real authentication, it should use server-side sessions and a login flow rather than
-requiring the API bearer token in browser forms.
+time. `/health` and the public landing page are outside that router. The single-user API
+token is independent of UI login credentials.
+
+### UI session auth
+
+The development-only UI has a password login. A successful login issues an `HttpOnly`,
+`SameSite=Lax` cookie containing a session signed with `itsdangerous`; the signing secret
+is configured separately from the UI password. The cookie is time-limited and validated
+on every `/ui/*` request. Login attempts are rate-limited per client IP.
+
+For normal browser requests, an invalid or missing session redirects to `/login` with a
+303. HTMX requests instead receive a 401 with `HX-Redirect: /login`, which tells HTMX to
+navigate the whole page rather than swapping the login page into a partial content
+target.
 
 ## Bookmark metadata fetch
 

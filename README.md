@@ -66,19 +66,25 @@ make fmt
 
 ## UI
 
-In development, open <http://localhost:8000/> for the landing page, or go directly to
-<http://localhost:8000/ui/notes> and <http://localhost:8000/ui/bookmarks>. The UI is
-currently unauthenticated and is only registered when `UNIFY_ENVIRONMENT=dev`. A login
-page and session-based authentication are planned.
+In development, open <http://localhost:8000/> for the public landing page. Sign in at
+<http://localhost:8000/login> with `UNIFY_UI_PASSWORD`, then use
+<http://localhost:8000/ui/notes> and <http://localhost:8000/ui/bookmarks>. The UI routes
+are registered only when `UNIFY_ENVIRONMENT=dev`.
 
 ### Auth
 
-All routes under `/api` require a bearer token. Set `UNIFY_API_TOKEN` in `.env`. The
-default development token is `dev-token-change-me`.
+All routes under `/api` require the bearer token set by `UNIFY_API_TOKEN`. The default
+development token is `dev-token-change-me`. The HTML UI uses a signed `unify_session`
+cookie after login with `UNIFY_UI_PASSWORD`; the default development password is
+`dev-password-change-me`.
 
 ```sh
 curl -H "Authorization: Bearer $UNIFY_API_TOKEN" http://localhost:8000/api/whoami
 ```
+
+Set `UNIFY_UI_PASSWORD` and `UNIFY_SESSION_SECRET` to non-`dev-` values in production.
+The app refuses to start outside development if either retains its development
+placeholder.
 
 ## API
 
@@ -113,6 +119,7 @@ make downgrade
 - [x] Notes API
 - [x] Bookmarks API
 - [x] HTMX UI
+- [x] UI session auth
 - [ ] Deploy to VPS (needs VPS)
 - [ ] CI/CD
 

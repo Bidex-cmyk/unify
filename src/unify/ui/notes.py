@@ -7,10 +7,15 @@ from starlette.responses import HTMLResponse
 from unify.db import get_session
 from unify.schemas import NoteCreate
 from unify.services import notes
+from unify.ui.auth import require_ui_session
 from unify.ui.forms import parse_tags
 from unify.ui.templating import templates
 
-router = APIRouter(prefix="/ui/notes", tags=["ui"])
+router = APIRouter(
+    prefix="/ui/notes",
+    tags=["ui"],
+    dependencies=[Depends(require_ui_session)],
+)
 
 
 @router.get("")

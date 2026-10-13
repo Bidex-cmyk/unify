@@ -9,10 +9,15 @@ from unify.db import get_session
 from unify.routers.bookmarks import _hydrate
 from unify.schemas import BookmarkCreate
 from unify.services import bookmarks
+from unify.ui.auth import require_ui_session
 from unify.ui.forms import parse_tags
 from unify.ui.templating import templates
 
-router = APIRouter(prefix="/ui/bookmarks", tags=["ui"])
+router = APIRouter(
+    prefix="/ui/bookmarks",
+    tags=["ui"],
+    dependencies=[Depends(require_ui_session)],
+)
 
 
 @router.get("")

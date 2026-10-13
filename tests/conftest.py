@@ -44,7 +44,7 @@ def client(
 
     app.dependency_overrides[get_session] = override_get_session
     try:
-        with TestClient(app) as test_client:
+        with TestClient(app, follow_redirects=False) as test_client:
             yield test_client
     finally:
         app.dependency_overrides.pop(get_session, None)

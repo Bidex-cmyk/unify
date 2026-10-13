@@ -5,6 +5,7 @@ from unify.auth import require_token
 from unify.config import settings
 from unify.routers import bookmarks, notes
 from unify.ui import bookmarks as bookmarks_ui
+from unify.ui import login as login_ui
 from unify.ui import notes as notes_ui
 from unify.ui.templating import templates
 
@@ -38,6 +39,7 @@ def create_app() -> FastAPI:
     app.include_router(api_router)
     if settings.environment == "dev":
         app.add_api_route("/", landing_page, methods=["GET"], tags=["ui"])
+        app.include_router(login_ui.router)
         app.include_router(notes_ui.router)
         app.include_router(bookmarks_ui.router)
     return app

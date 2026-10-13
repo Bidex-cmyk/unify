@@ -16,6 +16,7 @@
       header, main { width: min(100% - 2rem, 720px); margin-inline: auto; }
       header { padding-block: 1.25rem; border-bottom: 1px solid #d8dce2; }
       nav { display: flex; gap: 1.25rem; }
+      nav form { display: inline; margin: 0 0 0 auto; }
       nav a { font-weight: 600; }
       main { padding-block: 2rem; }
       a { color: #2459a6; }
@@ -41,6 +42,7 @@
       .card p { white-space: pre-wrap; overflow-wrap: anywhere; }
       .tags { display: flex; flex-wrap: wrap; gap: .6rem; color: #526174; }
       .error { color: #a21d2d; }
+      .login-card { max-width: 320px; margin: 3rem auto; }
       #toast { position: fixed; right: 1rem; bottom: 1rem; }
       @media (prefers-color-scheme: dark) {
         body { background: #171a1f; color: #e6e9ee; }
@@ -59,6 +61,9 @@
       <nav aria-label="Main navigation">
         <a href="/ui/notes">Notes</a>
         <a href="/ui/bookmarks">Bookmarks</a>
+        <form method="post" action="/logout" style="display:inline">
+          <button type="submit">Log out</button>
+        </form>
       </nav>
     </header>
     <main>{% block content %}{% endblock %}</main>

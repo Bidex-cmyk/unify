@@ -9,6 +9,18 @@ from unify.config import settings
 from unify.main import create_app
 from unify.routers import bookmarks as bookmarks_router
 from unify.services import fetch_meta
+from unify.sessions import COOKIE_NAME, sign_session
+
+
+@pytest.fixture
+def ui_client(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> TestClient:
+    monkeypatch.setattr(settings, "session_secret", "ui-test-secret")
+    monkeypatch.setattr(settings, "ui_password", "ui-test-password")
+    client.cookies.set(COOKIE_NAME, sign_session())
+    return client
 
 
 def test_landing_page_links_to_collections(client: TestClient) -> None:
@@ -19,16 +31,16 @@ def test_landing_page_links_to_collections(client: TestClient) -> None:
     assert "/ui/bookmarks" in response.text
 
 
-def test_notes_page_empty_state(client: TestClient) -> None:
-    response = client.get("/ui/notes")
+def test_notes_page_empty_state(ui_client: TestClient) -> None:
+    response = ui_client.get("/ui/notes")
 
     assert response.status_code == 200
     assert "Notes" in response.text
     assert "No notes yet." in response.text
 
 
-def test_note_create_and_delete_round_trip(client: TestClient) -> None:
-    created = client.post(
+def test_note_create_and_delete_round_trip(ui_client: TestClient) -> None:
+    created = ui_client.post(
         "/ui/notes",
         data={"title": "UI note", "body": "Note body", "tags": "one, two,, "},
     )
@@ -38,17 +50,17 @@ def test_note_create_and_delete_round_trip(client: TestClient) -> None:
     assert "#one" in created.text
     assert "#two" in created.text
     note_id = created.text.split('id="note-', maxsplit=1)[1].split('"', maxsplit=1)[0]
-    listing = client.get("/ui/notes")
-    deleted = client.delete(f"/ui/notes/{note_id}")
-    listing_after_delete = client.get("/ui/notes")
+    listing = ui_client.get("/ui/notes")
+    deleted = ui_client.delete(f"/ui/notes/{note_id}")
+    listing_after_delete = ui_client.get("/ui/notes")
 
     assert "UI note" in listing.text
     assert deleted.status_code == 200
     assert "UI note" not in listing_after_delete.text
 
 
-def test_note_title_is_html_escaped(client: TestClient) -> None:
-    response = client.post(
+def test_note_title_is_html_escaped(ui_client: TestClient) -> None:
+    response = ui_client.post(
         "/ui/notes",
         data={"title": "<script>alert(1)</script>", "body": ""},
     )
@@ -75,10 +87,10 @@ def stub_bookmark_metadata(
 
 
 def test_bookmark_create_and_delete_round_trip(
-    client: TestClient,
+    ui_client: TestClient,
     stub_bookmark_metadata: None,
 ) -> None:
-    created = client.post(
+    created = ui_client.post(
         "/ui/bookmarks",
         data={"url": "https://example.com/ui-test", "tags": "reading, saved"},
     )
@@ -87,9 +99,9 @@ def test_bookmark_create_and_delete_round_trip(
     assert "https://example.com/ui-test" in created.text
     assert "#reading" in created.text
     bookmark_id = created.text.split('id="bm-', maxsplit=1)[1].split('"', maxsplit=1)[0]
-    listing = client.get("/ui/bookmarks")
-    deleted = client.delete(f"/ui/bookmarks/{bookmark_id}")
-    listing_after_delete = client.get("/ui/bookmarks")
+    listing = ui_client.get("/ui/bookmarks")
+    deleted = ui_client.delete(f"/ui/bookmarks/{bookmark_id}")
+    listing_after_delete = ui_client.get("/ui/bookmarks")
 
     assert "https://example.com/ui-test" in listing.text
     assert deleted.status_code == 200
