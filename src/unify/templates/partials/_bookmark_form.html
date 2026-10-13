@@ -1,0 +1,5 @@
+<form hx-post="/ui/bookmarks" hx-target="#bookmarks-list" hx-swap="afterbegin" hx-on::after-request="if(event.detail.successful) this.reset()">
+  <input name="url" type="url" placeholder="https://example.com" required>
+  <input name="tags" placeholder="tags, comma, separated">
+  <button type="submit">Add bookmark</button>
+</form>

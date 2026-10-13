@@ -1,0 +1,6 @@
+<form hx-post="/ui/notes" hx-target="#notes-list" hx-swap="afterbegin" hx-on::after-request="if(event.detail.successful) this.reset()">
+  <input name="title" placeholder="Title" required>
+  <textarea name="body" placeholder="Body"></textarea>
+  <input name="tags" placeholder="tags, comma, separated">
+  <button type="submit">Add note</button>
+</form>

@@ -52,6 +52,13 @@ make lint
 make fmt
 ```
 
+## UI
+
+In development, open <http://localhost:8000/> for the landing page, or go directly to
+<http://localhost:8000/ui/notes> and <http://localhost:8000/ui/bookmarks>. The UI is
+currently unauthenticated and is only registered when `UNIFY_ENVIRONMENT=dev`. A login
+page and session-based authentication are planned.
+
 ### Auth
 
 All routes under `/api` require a bearer token. Set `UNIFY_API_TOKEN` in `.env`. The
@@ -93,7 +100,7 @@ make downgrade
 - [x] Auth
 - [x] Notes API
 - [x] Bookmarks API
-- [ ] HTMX UI
+- [x] HTMX UI
 - [ ] VPS deploy
 - [ ] CI/CD
 

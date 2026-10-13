@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}unify{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #f5f6f8; color: #20242b; }
+      header, main { width: min(100% - 2rem, 720px); margin-inline: auto; }
+      header { padding-block: 1.25rem; border-bottom: 1px solid #d8dce2; }
+      nav { display: flex; gap: 1.25rem; }
+      nav a { font-weight: 600; }
+      main { padding-block: 2rem; }
+      a { color: #2459a6; }
+      h1 { margin-top: 0; }
+      form { display: grid; gap: .75rem; margin-block: 1rem 1.5rem; }
+      input, textarea, button {
+        font: inherit;
+        border: 1px solid #aeb6c2;
+        border-radius: .4rem;
+        padding: .65rem .75rem;
+      }
+      textarea { min-height: 7rem; resize: vertical; }
+      button { width: fit-content; cursor: pointer; background: #e8edf5; }
+      button:hover { background: #dbe5f3; }
+      .card {
+        margin-block: .75rem;
+        padding: 1rem;
+        border: 1px solid #d8dce2;
+        border-radius: .6rem;
+        background: #fff;
+      }
+      .card h2, .card h3 { margin: 0 0 .5rem; overflow-wrap: anywhere; }
+      .card p { white-space: pre-wrap; overflow-wrap: anywhere; }
+      .tags { display: flex; flex-wrap: wrap; gap: .6rem; color: #526174; }
+      .error { color: #a21d2d; }
+      #toast { position: fixed; right: 1rem; bottom: 1rem; }
+      @media (prefers-color-scheme: dark) {
+        body { background: #171a1f; color: #e6e9ee; }
+        header, .card { border-color: #39414c; }
+        .card { background: #20252d; }
+        a { color: #9fc4ff; }
+        input, textarea, button { color: inherit; background: #20252d; border-color: #586271; }
+        button:hover { background: #303a48; }
+        .tags { color: #b0bac8; }
+        .error { color: #ff929d; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Main navigation">
+        <a href="/ui/notes">Notes</a>
+        <a href="/ui/bookmarks">Bookmarks</a>
+      </nav>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

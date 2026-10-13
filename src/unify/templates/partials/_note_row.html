@@ -1,0 +1,6 @@
+<article class="card" id="note-{{ note.id }}">
+  <h3>{{ note.title }}</h3>
+  {% if note.body %}<p>{{ note.body }}</p>{% endif %}
+  {% if note.tags %}<p class="tags">{% for t in note.tags %}<span>#{{ t }}</span>{% endfor %}</p>{% endif %}
+  <button hx-delete="/ui/notes/{{ note.id }}" hx-target="#note-{{ note.id }}" hx-swap="outerHTML" hx-confirm="Delete this note?">Delete</button>
+</article>

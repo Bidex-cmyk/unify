@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Notes · unify{% endblock %}
+{% block content %}
+  <h1>Notes</h1>
+  {% include "partials/_note_form.html" %}
+  <div id="notes-list">
+    {% for note in notes %}
+      {% include "partials/_note_row.html" %}
+    {% else %}
+      <p>No notes yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+<article class="card" id="bm-{{ bm.id }}">
+  <h3><a href="{{ bm.url }}" target="_blank" rel="noopener noreferrer">{{ bm.title or bm.url }}</a></h3>
+  {% if bm.description %}<p>{{ bm.description }}</p>{% endif %}
+  {% if bm.tags %}<p class="tags">{% for t in bm.tags %}<span>#{{ t }}</span>{% endfor %}</p>{% endif %}
+  <button hx-delete="/ui/bookmarks/{{ bm.id }}" hx-target="#bm-{{ bm.id }}" hx-swap="outerHTML" hx-confirm="Delete this bookmark?">Delete</button>
+</article>
