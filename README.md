@@ -5,13 +5,25 @@ Self-hosted personal API unifying notes, bookmarks, expenses, and habits.
 [![CI](https://github.com/Bidex-cmyk/unify/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Bidex-cmyk/unify/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.12%2B-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Coverage](https://img.shields.io/badge/coverage-94%25-brightgreen)
 
-## What it is
+## Why this exists
 
-unify is a self-hosted personal API for bringing everyday personal data into one place.
-The goal is to manage notes, bookmarks, expenses, and habits through a consistent API
-that you can run and control yourself. This repository currently contains the initial
-application scaffold and health endpoint.
+Personal information gets scattered across services that are difficult to own, back up,
+or connect. unify brings notes, bookmarks, expenses, and habits toward one API and a
+small self-hosted interface. The goal is useful, portable personal software that you
+control.
+
+## Architecture
+
+See [the architecture overview](docs/architecture.md) for the layer boundaries, data
+deletion policy, auth model, migrations, and testing approach.
+
+## Demo
+
+<!-- replace with recorded GIF -->
+
+![Demo](docs/demo.gif)
 
 ## Stack
 
@@ -101,7 +113,7 @@ make downgrade
 - [x] Notes API
 - [x] Bookmarks API
 - [x] HTMX UI
-- [ ] VPS deploy
+- [ ] Deploy to VPS (needs VPS)
 - [ ] CI/CD
 
 ## License

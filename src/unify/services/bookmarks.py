@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from uuid import UUID
 
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
 from unify.models import Bookmark
 from unify.schemas import BookmarkCreate, BookmarkUpdate
@@ -10,8 +10,8 @@ from unify.schemas import BookmarkCreate, BookmarkUpdate
 def list_bookmarks(db: Session, *, include_deleted: bool = False) -> list[Bookmark]:
     statement = select(Bookmark)
     if not include_deleted:
-        statement = statement.where(Bookmark.deleted_at.is_(None))
-    statement = statement.order_by(Bookmark.created_at.desc())
+        statement = statement.where(col(Bookmark.deleted_at).is_(None))
+    statement = statement.order_by(col(Bookmark.created_at).desc())
     return list(db.exec(statement).all())
 
 

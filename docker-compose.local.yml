@@ -1,0 +1,14 @@
+services:
+  api:
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    environment:
+      UNIFY_DATABASE_URL: sqlite:////app/data/unify.db
+    command: uvicorn unify.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    ports:
+      - "5432:5432"

@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from uuid import UUID
 
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
 from unify.models import Note
 from unify.schemas import NoteCreate, NoteUpdate
@@ -10,8 +10,8 @@ from unify.schemas import NoteCreate, NoteUpdate
 def list_notes(db: Session, *, include_deleted: bool = False) -> list[Note]:
     statement = select(Note)
     if not include_deleted:
-        statement = statement.where(Note.deleted_at.is_(None))
-    statement = statement.order_by(Note.created_at.desc())
+        statement = statement.where(col(Note.deleted_at).is_(None))
+    statement = statement.order_by(col(Note.created_at).desc())
     return list(db.exec(statement).all())
 
 

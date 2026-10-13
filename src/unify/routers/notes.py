@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlmodel import Session
 
 from unify.db import get_session
+from unify.models import Note
 from unify.schemas import NoteCreate, NoteRead, NoteUpdate
 from unify.services import notes
 
@@ -14,12 +15,12 @@ router = APIRouter(prefix="/notes", tags=["notes"])
 def list_notes(
     include_deleted: bool = False,
     db: Session = Depends(get_session),  # noqa: B008
-) -> list[NoteRead]:
+) -> list[Note]:
     return notes.list_notes(db, include_deleted=include_deleted)
 
 
 @router.get("/{note_id}", response_model=NoteRead)
-def get_note(note_id: UUID, db: Session = Depends(get_session)) -> NoteRead:  # noqa: B008
+def get_note(note_id: UUID, db: Session = Depends(get_session)) -> Note:  # noqa: B008
     note = notes.get_note(db, note_id)
     if note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")
@@ -27,7 +28,7 @@ def get_note(note_id: UUID, db: Session = Depends(get_session)) -> NoteRead:  # 
 
 
 @router.post("", response_model=NoteRead, status_code=status.HTTP_201_CREATED)
-def create_note(data: NoteCreate, db: Session = Depends(get_session)) -> NoteRead:  # noqa: B008
+def create_note(data: NoteCreate, db: Session = Depends(get_session)) -> Note:  # noqa: B008
     return notes.create_note(db, data)
 
 
@@ -36,7 +37,7 @@ def update_note(
     note_id: UUID,
     data: NoteUpdate,
     db: Session = Depends(get_session),  # noqa: B008
-) -> NoteRead:
+) -> Note:
     note = notes.update_note(db, note_id, data)
     if note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note not found")

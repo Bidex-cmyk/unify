@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
 from unify.db import get_session, session_scope
+from unify.models import Bookmark
 from unify.schemas import BookmarkCreate, BookmarkRead, BookmarkUpdate
 from unify.services import bookmarks, fetch_meta
 
@@ -27,7 +28,7 @@ async def _hydrate(bookmark_id: UUID, url: str) -> None:
 def list_bookmarks(
     include_deleted: bool = False,
     db: Session = Depends(get_session),  # noqa: B008
-) -> list[BookmarkRead]:
+) -> list[Bookmark]:
     return bookmarks.list_bookmarks(db, include_deleted=include_deleted)
 
 
@@ -35,7 +36,7 @@ def list_bookmarks(
 def get_bookmark(
     bookmark_id: UUID,
     db: Session = Depends(get_session),  # noqa: B008
-) -> BookmarkRead:
+) -> Bookmark:
     bookmark = bookmarks.get_bookmark(db, bookmark_id)
     if bookmark is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bookmark not found")
@@ -47,7 +48,7 @@ def create_bookmark(
     data: BookmarkCreate,
     background: BackgroundTasks,
     db: Session = Depends(get_session),  # noqa: B008
-) -> BookmarkRead:
+) -> Bookmark:
     try:
         bookmark = bookmarks.create_bookmark(db, data)
     except IntegrityError as exc:
@@ -64,7 +65,7 @@ def update_bookmark(
     bookmark_id: UUID,
     data: BookmarkUpdate,
     db: Session = Depends(get_session),  # noqa: B008
-) -> BookmarkRead:
+) -> Bookmark:
     bookmark = bookmarks.update_bookmark(db, bookmark_id, data)
     if bookmark is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bookmark not found")
