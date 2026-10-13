@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: install dev test lint typecheck coverage fmt clean migrate revision downgrade up-local down-local help
+.PHONY: install dev test lint typecheck coverage fmt clean migrate revision downgrade up-local down-local openapi help
 
 install:
 	uv sync
@@ -29,6 +29,9 @@ up-local:
 down-local:
 	docker compose -f docker-compose.yml -f docker-compose.local.yml down
 
+openapi:
+	uv run python -c "import json,urllib.request; print(json.dumps(json.load(urllib.request.urlopen('http://localhost:8000/openapi.json')), indent=2))" > docs/openapi.json
+
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
 	rm -rf .pytest_cache .ruff_cache
@@ -55,6 +58,7 @@ help:
 		'fmt     - Format code and apply Ruff fixes' \
 		'up-local - Start local Docker Compose development stack' \
 		'down-local - Stop local Docker Compose development stack' \
+		'openapi - Refresh OpenAPI snapshot (app must be running)' \
 		'migrate - Apply all database migrations' \
 		'revision - Generate a migration (requires m="message")' \
 		'downgrade - Revert the latest database migration' \
