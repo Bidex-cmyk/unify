@@ -2,14 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from unify.config import Settings, settings
-from unify.main import app
-
-
-@pytest.fixture
-def client(monkeypatch: pytest.MonkeyPatch) -> TestClient:
-    monkeypatch.setattr(settings, "api_token", "test-token")
-    return TestClient(app)
+from unify.config import Settings
 
 
 def test_health_is_public(client: TestClient) -> None:
@@ -36,8 +29,8 @@ def test_whoami_rejects_malformed_authorization(client: TestClient) -> None:
     assert response.status_code == 401
 
 
-def test_whoami_accepts_correct_token(client: TestClient) -> None:
-    response = client.get("/api/whoami", headers={"Authorization": "Bearer test-token"})
+def test_whoami_accepts_correct_token(client: TestClient, auth_headers: dict[str, str]) -> None:
+    response = client.get("/api/whoami", headers=auth_headers)
 
     assert response.status_code == 200
     assert response.json() == {"status": "authenticated"}

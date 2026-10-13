@@ -61,6 +61,18 @@ default development token is `dev-token-change-me`.
 curl -H "Authorization: Bearer $UNIFY_API_TOKEN" http://localhost:8000/api/whoami
 ```
 
+## API
+
+Routes use the `/api` prefix. Every route under `/api` requires the bearer token.
+
+| Method | Path | Description |
+| --- | --- | --- |
+| GET | `/api/notes` | List notes; `include_deleted=true` includes soft-deleted notes |
+| POST | `/api/notes` | Create a note |
+| GET | `/api/notes/{note_id}` | Get a note by ID |
+| PATCH | `/api/notes/{note_id}` | Partially update a note |
+| DELETE | `/api/notes/{note_id}` | Soft-delete a note; `hard=true` permanently deletes it |
+
 ## Migrations
 
 ```sh
@@ -74,7 +86,7 @@ make downgrade
 - [x] Scaffold
 - [x] DB models
 - [x] Auth
-- [ ] Notes API
+- [x] Notes API
 - [ ] Bookmarks API
 - [ ] HTMX UI
 - [ ] VPS deploy
