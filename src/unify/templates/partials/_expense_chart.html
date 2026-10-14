@@ -1,0 +1,15 @@
+{% if chart_rows %}
+<div class="chart">
+  {% for category, amount, width, amount_display in chart_rows %}
+  <div class="chart-row">
+    <span class="chart-label">{{ category }}</span>
+    <svg class="chart-bar" viewBox="0 0 100 12" role="img" aria-label="{{ category }}: {{ amount_display }}">
+      <rect x="0" y="0" width="{{ width }}" height="12" rx="3"></rect>
+    </svg>
+    <span class="chart-value">{{ currency }} {{ amount_display }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="muted">No expenses this month.</p>
+{% endif %}

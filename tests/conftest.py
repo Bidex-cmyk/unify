@@ -9,7 +9,7 @@ from sqlmodel import Session, SQLModel, create_engine
 from unify.config import settings
 from unify.db import get_session
 from unify.main import app
-from unify.models import Bookmark, Note  # noqa: F401
+from unify.models import Bookmark, Expense, Note  # noqa: F401
 
 
 @pytest.fixture

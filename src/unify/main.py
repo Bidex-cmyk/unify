@@ -3,8 +3,9 @@ from fastapi import APIRouter, Depends, FastAPI, Request, Response
 from unify import __version__
 from unify.auth import require_token
 from unify.config import settings
-from unify.routers import bookmarks, notes
+from unify.routers import bookmarks, expenses, notes
 from unify.ui import bookmarks as bookmarks_ui
+from unify.ui import expenses as expenses_ui
 from unify.ui import login as login_ui
 from unify.ui import notes as notes_ui
 from unify.ui.templating import templates
@@ -13,6 +14,7 @@ health_router = APIRouter()
 api_router = APIRouter(prefix="/api", dependencies=[Depends(require_token)])
 api_router.include_router(notes.router)
 api_router.include_router(bookmarks.router)
+api_router.include_router(expenses.router)
 
 
 @health_router.get("/health")
@@ -42,6 +44,7 @@ def create_app() -> FastAPI:
         app.include_router(login_ui.router)
         app.include_router(notes_ui.router)
         app.include_router(bookmarks_ui.router)
+        app.include_router(expenses_ui.router)
     return app
 
 

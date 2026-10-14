@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Expenses · unify{% endblock %}
+{% block content %}
+  <h1>Expenses</h1>
+  <form hx-post="/ui/expenses" hx-target="#expense-form-error" hx-swap="innerHTML" hx-on::after-request="if(event.detail.successful) this.reset()">
+    <input name="amount" inputmode="decimal" placeholder="Amount (e.g. 12.50)" required>
+    <input name="currency" value="USD" maxlength="3" required>
+    <input name="category" placeholder="Category" value="uncategorized" maxlength="50">
+    <input name="note" placeholder="Note">
+    <button type="submit">Add expense</button>
+  </form>
+  <div id="expense-form-error"></div>
+  <section class="card" aria-label="Monthly summary">
+    <h2>Summary for {{ month }}</h2>
+    <p>Total: {{ currency }} {{ total_display }}</p>
+    {% include "partials/_expense_chart.html" %}
+  </section>
+  <section id="expenses-list" aria-label="Expenses">
+    {% for expense in expenses %}
+      {% include "partials/_expense_row.html" %}
+    {% endfor %}
+  </section>
+{% endblock %}

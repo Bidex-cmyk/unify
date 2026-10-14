@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import JSON, Column, DateTime, String
+from sqlalchemy import CheckConstraint, JSON, Column, DateTime, String
 from sqlalchemy.types import TypeDecorator
 from sqlmodel import Field, SQLModel
 
@@ -52,6 +52,28 @@ class Bookmark(SQLModel, table=True):
     title: str = ""
     description: str = ""
     tags: list[str] = Field(default_factory=list, sa_column=Column(JSON))
+    created_at: datetime = Field(
+        default_factory=_utcnow,
+        sa_column=Column(_UTCDateTime(), nullable=False, default=_utcnow),
+    )
+    updated_at: datetime = Field(
+        default_factory=_utcnow,
+        sa_column=Column(_UTCDateTime(), nullable=False, default=_utcnow, onupdate=_utcnow),
+    )
+    deleted_at: datetime | None = Field(
+        default=None, sa_column=Column(_UTCDateTime(), nullable=True)
+    )
+
+
+class Expense(SQLModel, table=True):
+    __table_args__ = (CheckConstraint("amount_minor > 0", name="ck_expense_amount_minor_positive"),)
+
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    amount_minor: int
+    currency: str = Field(default="USD", max_length=3)
+    category: str = Field(default="uncategorized", index=True, max_length=50)
+    note: str = ""
+    occurred_at: datetime = Field(default_factory=_utcnow, index=True)
     created_at: datetime = Field(
         default_factory=_utcnow,
         sa_column=Column(_UTCDateTime(), nullable=False, default=_utcnow),

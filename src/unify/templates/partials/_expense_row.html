@@ -1,0 +1,6 @@
+<article class="card" id="expense-{{ expense.id }}">
+  <h3>{{ expense.currency }} {{ expense_display }}</h3>
+  <p><strong>{{ expense.category }}</strong>{% if expense.note %} — {{ expense.note }}{% endif %}</p>
+  <p class="muted">{{ expense.occurred_at.strftime("%Y-%m-%d") }}</p>
+  <button hx-delete="/ui/expenses/{{ expense.id }}" hx-target="#expense-{{ expense.id }}" hx-swap="outerHTML" hx-confirm="Delete this expense?">Delete</button>
+</article>

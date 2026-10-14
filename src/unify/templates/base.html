@@ -43,6 +43,12 @@
       .tags { display: flex; flex-wrap: wrap; gap: .6rem; color: #526174; }
       .error { color: #a21d2d; }
       .login-card { max-width: 320px; margin: 3rem auto; }
+      .chart { display: grid; gap: .5rem; }
+      .chart-row { display: grid; grid-template-columns: 8rem 1fr 5rem; align-items: center; gap: .75rem; }
+      .chart-label { overflow-wrap: anywhere; }
+      .chart-bar { height: .8rem; fill: #3973c6; background: #3973c6; }
+      .chart-value { text-align: right; font-variant-numeric: tabular-nums; }
+      .muted { color: #687486; }
       #toast { position: fixed; right: 1rem; bottom: 1rem; }
       @media (prefers-color-scheme: dark) {
         body { background: #171a1f; color: #e6e9ee; }
@@ -53,6 +59,8 @@
         button:hover { background: #303a48; }
         .tags { color: #b0bac8; }
         .error { color: #ff929d; }
+        .chart-bar { fill: #8bb8ff; background: #8bb8ff; }
+        .muted { color: #aab4c2; }
       }
     </style>
   </head>
@@ -61,6 +69,7 @@
       <nav aria-label="Main navigation">
         <a href="/ui/notes">Notes</a>
         <a href="/ui/bookmarks">Bookmarks</a>
+        <a href="/ui/expenses">Expenses</a>
         <form method="post" action="/logout" style="display:inline">
           <button type="submit">Log out</button>
         </form>
