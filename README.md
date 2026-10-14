@@ -31,6 +31,7 @@ a lightweight browser UI, designed to grow alongside its data.
 
 - Notes API with create, partial update, and soft delete; browser UI supports create and delete.
 - Bookmarks API with background title and description fetching.
+- Expenses module for logging amounts, currencies, and categories, with monthly summaries and an inline SVG bar chart; money is stored as integer minor units.
 - HTMX UI with a signed session-cookie login.
 - Bearer-token authentication for the JSON API.
 - Soft deletion with explicit permanent-delete support.
@@ -78,6 +79,20 @@ The API schema is available as [OpenAPI JSON](docs/openapi.json); when running l
 interactive docs are at [`/docs`](http://localhost:8000/docs) and
 [`/redoc`](http://localhost:8000/redoc).
 
+## API
+
+The Expenses API supports logging and reviewing expenses. Amounts are sent and stored
+as integer minor units (for example, `1299` is USD 12.99).
+
+| Method | Path | Description |
+| --- | --- | --- |
+| GET | `/api/expenses` | List expenses; supports `since`, `until`, and `include_deleted` filters |
+| GET | `/api/expenses/summary?month=YYYY-MM` | Get the monthly total and totals by category |
+| GET | `/api/expenses/{id}` | Get an expense |
+| POST | `/api/expenses` | Create an expense |
+| PATCH | `/api/expenses/{id}` | Partially update an expense |
+| DELETE | `/api/expenses/{id}?hard=true` | Delete an expense; soft-deletes by default, permanently deletes with `hard=true` |
+
 ## Roadmap
 
 - [x] Scaffold
@@ -85,6 +100,7 @@ interactive docs are at [`/docs`](http://localhost:8000/docs) and
 - [x] API and UI authentication
 - [x] Notes API
 - [x] Bookmarks API
+- [x] Expenses module
 - [x] HTMX UI
 - [x] Strict type checking
 - [x] Coverage reporting

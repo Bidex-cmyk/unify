@@ -25,6 +25,15 @@ The API does not return SQLModel tables directly as its contract. Read schemas e
 select exposed fields, so internal columns (such as `deleted_at`) stay private and future
 storage changes do not silently change API responses.
 
+## Data model
+
+### Money as integer minor units
+
+Expense amounts are stored as an integer number of currency minor units, such as cents;
+they are never stored as floating-point values. The database enforces
+`CHECK (amount_minor > 0)`. The UI parses submitted decimal amounts with Python's
+`Decimal` and converts them to integer minor units before persistence.
+
 ## Soft deletion
 
 Notes and bookmarks have a nullable `deleted_at`. A normal delete marks the timestamp

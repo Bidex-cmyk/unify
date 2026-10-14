@@ -34,6 +34,22 @@ UI routes are registered only in development.
 
 List endpoints accept `include_deleted=true` to include soft-deleted records.
 
+## Expenses
+
+All expense endpoints require the API bearer token. Expense amounts are represented as
+integer minor units (for example, `1299` is USD 12.99). List results are newest first;
+`since` and `until` filter by occurrence time. Deletes are soft by default and accept
+`hard=true` for permanent deletion.
+
+| Method | Path | Description |
+| --- | --- | --- |
+| GET | `/api/expenses` | List expenses; accepts `since`, `until`, and `include_deleted` |
+| GET | `/api/expenses/summary?month=YYYY-MM` | Get the month total and category totals |
+| GET | `/api/expenses/{expense_id}` | Get an expense |
+| POST | `/api/expenses` | Create an expense |
+| PATCH | `/api/expenses/{expense_id}` | Partially update an expense |
+| DELETE | `/api/expenses/{expense_id}?hard=true` | Soft-delete by default; permanently delete with `hard=true` |
+
 ## Examples
 
 Create a note:
@@ -59,6 +75,31 @@ curl -X POST "$BASE_URL/api/bookmarks" \
   -H "Authorization: Bearer $UNIFY_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"url":"https://example.com","tags":["reference"]}'
+```
+
+Create an expense (USD 12.99):
+
+```sh
+curl -X POST "$BASE_URL/api/expenses" \
+  -H "Authorization: ******" \
+  -H "Content-Type: application/json" \
+  -d '{"amount_minor":1299,"currency":"USD","category":"dining","note":"Lunch"}'
+```
+
+Get the summary for the current month:
+
+```sh
+curl "$BASE_URL/api/expenses/summary?month=$(date +%Y-%m)" \
+  -H "Authorization: ******"
+```
+
+List expenses for a date range:
+
+```sh
+curl --get "$BASE_URL/api/expenses" \
+  -H "Authorization: ******" \
+  --data-urlencode "since=2026-10-01T00:00:00Z" \
+  --data-urlencode "until=2026-10-31T23:59:59Z"
 ```
 
 An unauthenticated API request returns 401:

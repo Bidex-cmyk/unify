@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import CheckConstraint, JSON, Column, DateTime, String
+from sqlalchemy import JSON, CheckConstraint, Column, DateTime, String
 from sqlalchemy.types import TypeDecorator
 from sqlmodel import Field, SQLModel
 
