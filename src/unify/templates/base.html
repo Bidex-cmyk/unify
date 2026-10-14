@@ -70,9 +70,11 @@
         <a href="/ui/notes">Notes</a>
         <a href="/ui/bookmarks">Bookmarks</a>
         <a href="/ui/expenses">Expenses</a>
-        <form method="post" action="/logout" style="display:inline">
-          <button type="submit">Log out</button>
-        </form>
+        {% if request.cookies.get("unify_session") %}
+          <form method="post" action="/logout" style="display:inline">
+            <button type="submit">Log out</button>
+          </form>
+        {% endif %}
       </nav>
     </header>
     <main>{% block content %}{% endblock %}</main>
