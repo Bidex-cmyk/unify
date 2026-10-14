@@ -48,6 +48,47 @@ def test_expense_post_parses_decimal_minor_units(
     assert response.headers["HX-Reswap"] == "afterbegin"
 
 
+def test_expenses_page_lists_amounts(authenticated_ui_client: TestClient) -> None:
+    authenticated_ui_client.post(
+        "/ui/expenses",
+        data={"amount": "12.50", "category": "food", "note": "lunch"},
+    )
+
+    page = authenticated_ui_client.get("/ui/expenses")
+
+    assert "USD 12.50" in page.text
+    assert "lunch" in page.text
+    assert "No expenses logged this month yet." not in page.text
+
+
+def test_expenses_page_empty_list_has_a_message(authenticated_ui_client: TestClient) -> None:
+    page = authenticated_ui_client.get("/ui/expenses")
+
+    assert "No expenses logged this month yet." in page.text
+
+
+def test_expense_post_swaps_in_an_updated_summary(
+    authenticated_ui_client: TestClient,
+) -> None:
+    response = authenticated_ui_client.post(
+        "/ui/expenses",
+        data={"amount": "12.50", "category": "food"},
+    )
+
+    assert response.status_code == 200
+    assert 'id="expense-summary"' in response.text
+    assert 'hx-swap-oob="true"' in response.text
+    assert "Total: USD 12.50" in response.text
+    assert 'aria-label="food: 12.50"' in response.text
+
+
+def test_expense_page_summary_is_not_out_of_band(authenticated_ui_client: TestClient) -> None:
+    page = authenticated_ui_client.get("/ui/expenses")
+
+    assert 'id="expense-summary"' in page.text
+    assert "hx-swap-oob" not in page.text
+
+
 @pytest.mark.parametrize("amount", ["abc", "-5", "0"])
 def test_expense_post_rejects_invalid_amount(
     authenticated_ui_client: TestClient,

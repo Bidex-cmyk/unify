@@ -14,11 +14,13 @@
 
 _Recorded locally. See [docs/demo.md](docs/demo.md) to reproduce._
 
-<!-- uncomment once screenshots exist
 | Notes | Bookmarks |
 |---|---|
 | ![notes](docs/screenshots/notes.png) | ![bookmarks](docs/screenshots/bookmarks.png) |
--->
+
+| Expenses | Sign in |
+|---|---|
+| ![expenses](docs/screenshots/expenses.png) | ![login](docs/screenshots/login.png) |
 
 ## Why this exists
 

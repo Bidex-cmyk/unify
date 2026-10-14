@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}unify{% endblock %}</title>
+    <meta name="description" content="unify — a self-hosted home for your personal notes, bookmarks, and expenses.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232459a6'/%3E%3Ctext x='32' y='45' font-family='system-ui, sans-serif' font-size='40' font-weight='700' fill='%23ffffff' text-anchor='middle'%3Eu%3C/text%3E%3C/svg%3E">
     <script src="https://unpkg.com/htmx.org@2.0.3"></script>
     <style>
       :root {
@@ -15,7 +18,7 @@
       body { margin: 0; background: #f5f6f8; color: #20242b; }
       header, main { width: min(100% - 2rem, 720px); margin-inline: auto; }
       header { padding-block: 1.25rem; border-bottom: 1px solid #d8dce2; }
-      nav { display: flex; gap: 1.25rem; }
+      nav { display: flex; flex-wrap: wrap; gap: .6rem 1.25rem; }
       nav form { display: inline; margin: 0 0 0 auto; }
       nav a { font-weight: 600; }
       main { padding-block: 2rem; }
@@ -48,8 +51,12 @@
       .chart-label { overflow-wrap: anywhere; }
       .chart-bar { height: .8rem; fill: #3973c6; background: #3973c6; }
       .chart-value { text-align: right; font-variant-numeric: tabular-nums; }
-      .muted { color: #687486; }
+      .muted { color: #5b6572; }
       #toast { position: fixed; right: 1rem; bottom: 1rem; }
+      @media (max-width: 420px) {
+        nav { gap: .5rem .9rem; }
+        .chart-row { grid-template-columns: 5.5rem 1fr 4.5rem; }
+      }
       @media (prefers-color-scheme: dark) {
         body { background: #171a1f; color: #e6e9ee; }
         header, .card { border-color: #39414c; }

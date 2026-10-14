@@ -1,0 +1,5 @@
+<section class="card" id="expense-summary" aria-label="Monthly summary"{% if summary_oob %} hx-swap-oob="true"{% endif %}>
+  <h2>Summary for {{ month }}</h2>
+  <p>Total: {{ currency }} {{ total_minor | money }}</p>
+  {% include "partials/_expense_chart.html" %}
+</section>

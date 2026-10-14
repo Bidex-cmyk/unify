@@ -1,4 +1,5 @@
-<article class="card" id="bm-{{ bm.id }}">
+{% set attempt = attempt | default(0) %}
+<article class="card" id="bm-{{ bm.id }}"{% if bm_poll %} hx-get="/ui/bookmarks/{{ bm.id }}?attempt={{ attempt + 1 }}" hx-trigger="load delay:1200ms" hx-swap="outerHTML"{% endif %}>
   <h3><a href="{{ bm.url }}" target="_blank" rel="noopener noreferrer">{{ bm.title or bm.url }}</a></h3>
   {% if bm.description %}<p>{{ bm.description }}</p>{% endif %}
   {% if bm.tags %}<p class="tags">{% for t in bm.tags %}<span>#{{ t }}</span>{% endfor %}</p>{% endif %}

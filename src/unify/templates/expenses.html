@@ -10,14 +10,12 @@
     <button type="submit">Add expense</button>
   </form>
   <div id="expense-form-error"></div>
-  <section class="card" aria-label="Monthly summary">
-    <h2>Summary for {{ month }}</h2>
-    <p>Total: {{ currency }} {{ total_display }}</p>
-    {% include "partials/_expense_chart.html" %}
-  </section>
+  {% include "partials/_expense_summary.html" %}
   <section id="expenses-list" aria-label="Expenses">
     {% for expense in expenses %}
       {% include "partials/_expense_row.html" %}
+    {% else %}
+      <p class="muted">No expenses logged this month yet.</p>
     {% endfor %}
   </section>
 {% endblock %}

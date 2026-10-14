@@ -13,6 +13,8 @@ from unify.ui.auth import require_ui_session
 from unify.ui.forms import parse_tags
 from unify.ui.templating import templates
 
+_HYDRATE_POLL_LIMIT = 5
+
 router = APIRouter(
     prefix="/ui/bookmarks",
     tags=["ui"],
@@ -60,7 +62,29 @@ def create_bookmark_ui(
     return templates.TemplateResponse(
         request=request,
         name="partials/_bookmark_row.html",
-        context={"bm": bookmark},
+        context={"bm": bookmark, "attempt": 0, "bm_poll": True},
+    )
+
+
+@router.get("/{bookmark_id}")
+def get_bookmark_row_ui(
+    request: Request,
+    bookmark_id: UUID,
+    attempt: int = 0,
+    db: Session = Depends(get_session),  # noqa: B008
+) -> Response:
+    bookmark = bookmarks.get_bookmark(db, bookmark_id)
+    if bookmark is None:
+        raise HTTPException(status_code=404, detail="Bookmark not found")
+    return templates.TemplateResponse(
+        request=request,
+        name="partials/_bookmark_row.html",
+        context={
+            "bm": bookmark,
+            "attempt": attempt,
+            # Keep polling until the background fetch fills the title in, up to a limit.
+            "bm_poll": not bookmark.title and attempt < _HYDRATE_POLL_LIMIT,
+        },
     )
 
 

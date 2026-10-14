@@ -1,12 +1,12 @@
 {% if chart_rows %}
 <div class="chart">
-  {% for category, amount, width, amount_display in chart_rows %}
+  {% for category, amount, width in chart_rows %}
   <div class="chart-row">
     <span class="chart-label">{{ category }}</span>
-    <svg class="chart-bar" viewBox="0 0 100 12" role="img" aria-label="{{ category }}: {{ amount_display }}">
+    <svg class="chart-bar" viewBox="0 0 100 12" role="img" aria-label="{{ category }}: {{ amount | money }}">
       <rect x="0" y="0" width="{{ width }}" height="12" rx="3"></rect>
     </svg>
-    <span class="chart-value">{{ currency }} {{ amount_display }}</span>
+    <span class="chart-value">{{ currency }} {{ amount | money }}</span>
   </div>
   {% endfor %}
 </div>
